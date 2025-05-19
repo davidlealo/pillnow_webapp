@@ -3,131 +3,152 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PillNow - Dashboard</title>
+  <title>PillNow | Dashboard - Enfermera Fran</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💊</text></svg>">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-  <div class="dashboard">
-    <header class="dashboard-header">
-      <div>
-        <h1>Bienvenida, Enfermera Carla 👩‍⚕️</h1>
-        <p class="subtitle">Seguimiento post-operatorio - Hoy, 19 de mayo</p>
-      </div>
-      <button class="logout-button">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M9 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H9M16 17L21 12M21 12L16 7M21 12H9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        Cerrar sesión
-      </button>
-    </header>
-
-    <section class="stats-section">
-      <div class="stats-card">
-        <h3>Pacientes totales</h3>
-        <p class="stat-number">10</p>
-      </div>
-      <div class="stats-card">
-        <h3>Contactados hoy</h3>
-        <p class="stat-number">6</p>
-      </div>
-      <div class="stats-card">
-        <h3>Pendientes</h3>
-        <p class="stat-number">4</p>
-      </div>
-    </section>
-
-    <div class="chart-container">
-      <canvas id="chart"></canvas>
-    </div>
-
-    <div class="patient-controls">
-      <h2>Lista de pacientes</h2>
-      <div class="filters">
-        <button class="filter-button active">Todos</button>
-        <button class="filter-button">Contactados</button>
-        <button class="filter-button">Pendientes</button>
-      </div>
-    </div>
-
-    <div class="patient-list">
-      <div class="patient-card">
-        <div class="patient-avatar">MR</div>
-        <div class="patient-info">
-          <h3>Mario Rojas</h3>
-          <p class="patient-meta">Cirugía: Apendicectomía</p>
-          <p class="patient-meta">Último contacto: Ayer</p>
-          <p class="status" data-status="contactado">✅ Contactado</p>
+  <div class="dashboard-grid">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="logo">💊 <span style="font-weight: bold;">PillNow</span></div>
+      <nav class="main-nav">
+        <ul>
+          <li class="active"><a href="dashboard.html"><span class="material-icons">dashboard</span> Dashboard</a></li>
+          <li><a href="paciente.html"><span class="material-icons">group</span> Mis Pacientes</a></li>
+          <li><a href="#"><span class="material-icons">calendar_today</span> Calendario</a></li>
+          <li><a href="#"><span class="material-icons">local_pharmacy</span> Medicación</a></li>
+          <li><a href="#"><span class="material-icons">insert_chart</span> Reportes</a></li>
+        </ul>
+      </nav>
+      <div class="user-profile">
+        <img src="https://i.pravatar.cc/100?u=fran" alt="avatar" class="avatar" style="border-radius: 50%; width: 48px; height: 48px;">
+        <div class="user-info">
+          <strong>Enfermera Fran</strong>
+          <small>Post-Operatorio</small>
         </div>
-        <button onclick="verChat('mario')" class="chat-button">
-          Ver conversación
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M21 15C21 15.5304 20.7893 16.0391 20.4142 16.4142C20.0391 16.7893 19.5304 17 19 17H7L3 21V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H19C19.5304 3 20.0391 3.21071 20.4142 3.58579C20.7893 3.96086 21 4.46957 21 5V15Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </button>
       </div>
-      <!-- Resto de las tarjetas de pacientes con estructura similar -->
-    </div>
+    </aside>
+
+    <!-- Contenido principal -->
+    <main class="main-content">
+      <header class="page-header">
+        <h1>Panel de Seguimiento Post-Operatorio</h1>
+        <div class="header-actions">
+          <div class="search-box">
+            <input type="text" placeholder="Buscar paciente...">
+          </div>
+          <button class="btn-alert">
+            <span class="alert-dot"></span>
+            <span class="material-icons">notifications</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Alertas urgentes -->
+      <section class="alerts-section">
+        <h2>Alertas Urgentes</h2>
+        <div class="alerts-grid">
+          <div class="card alert-card critical">
+            <div class="alert-header">
+              <span class="alert-badge alert-critical">CRÍTICO</span>
+              <span class="alert-time">Hace 15 min</span>
+            </div>
+            <h3>Paciente: Carlos Mendez</h3>
+            <p>Fiebre persistente > 38.5°C - Posible rechazo de órgano</p>
+            <div class="alert-actions">
+              <button class="btn-small btn-primary" onclick="openChat('carlos')">Ver detalle</button>
+              <button class="btn-small btn-outline">Marcar como visto</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Resumen de pacientes -->
+      <section class="patients-section">
+        <div class="section-header">
+          <h2>Mis 10 Pacientes</h2>
+          <div class="tabs">
+            <div class="tab active">Todos</div>
+            <div class="tab">Críticos</div>
+            <div class="tab">Estables</div>
+          </div>
+        </div>
+
+        <div class="patients-grid" id="patients-grid">
+          <!-- Pacientes se cargarán por JS -->
+        </div>
+      </section>
+    </main>
   </div>
 
   <script>
-    // Gráfico mejorado
-    const ctx = document.getElementById('chart').getContext('2d');
-    new Chart(ctx, {
-      type: 'doughnut',
-      data: {
-        labels: ['Contactados', 'Pendientes'],
-        datasets: [{
-          data: [6, 4],
-          backgroundColor: ['#4CAF50', '#FBBC05'],
-          borderWidth: 0,
-          hoverOffset: 10
-        }]
+    const pacientes = [
+      {
+        id: "carlos",
+        nombre: "Carlos Mendez",
+        avatarUrl: "https://i.pravatar.cc/100?u=carlos",
+        estado: "critical",
+        presion: "120/80",
+        temperatura: "38.6°C",
+        diasPostOp: 2,
+        alerta: "Urgente"
       },
-      options: {
-        responsive: true,
-        cutout: '70%',
-        plugins: {
-          legend: {
-            position: 'bottom',
-            labels: {
-              boxWidth: 12,
-              padding: 20,
-              font: {
-                size: 14
-              }
-            }
-          },
-          tooltip: {
-            backgroundColor: 'rgba(0,0,0,0.8)',
-            bodyFont: {
-              size: 14
-            },
-            cornerRadius: 8
-          }
-        }
+      {
+        id: "ana",
+        nombre: "Ana Gutierrez",
+        avatarUrl: "https://i.pravatar.cc/100?u=ana",
+        estado: "warning",
+        presion: "110/70",
+        temperatura: "37.2°C",
+        diasPostOp: 5,
+        alerta: "Controlar"
+      },
+      {
+        id: "jose",
+        nombre: "José Peña",
+        avatarUrl: "https://i.pravatar.cc/100?u=jose",
+        estado: "stable",
+        presion: "118/76",
+        temperatura: "36.8°C",
+        diasPostOp: 3,
+        alerta: "Estable"
       }
-    });
+    ];
 
-    // Filtros interactivos
-    document.querySelectorAll('.filter-button').forEach(button => {
-      button.addEventListener('click', function() {
-        document.querySelectorAll('.filter-button').forEach(btn => btn.classList.remove('active'));
-        this.classList.add('active');
-        // Aquí iría la lógica para filtrar los pacientes
+    function renderPacientes() {
+      const contenedor = document.getElementById('patients-grid');
+      pacientes.forEach(p => {
+        contenedor.innerHTML += `
+          <div class="card patient-card">
+            <img class="patient-avatar" src="${p.avatarUrl}" alt="${p.nombre}">
+            <div class="patient-info">
+              <div class="patient-header">
+                <h3>${p.nombre}</h3>
+                <span class="alert-badge alert-${p.estado}">${p.alerta}</span>
+              </div>
+              <p class="patient-meta">Paciente post-operatorio</p>
+              <div class="patient-stats">
+                <span><span class="material-icons">monitor_heart</span> ${p.presion}</span>
+                <span><span class="material-icons">thermostat</span> ${p.temperatura}</span>
+                <span><span class="material-icons">access_time</span> ${p.diasPostOp} días post-op</span>
+              </div>
+            </div>
+            <button class="btn-icon chat-btn" onclick="openChat('${p.id}')">
+              <span class="material-icons">chat</span>
+            </button>
+          </div>
+        `;
       });
-    });
-
-    // Redirigir al chat
-    function verChat(pacienteId) {
-      window.location.href = `paciente.html?nombre=${pacienteId}`;
     }
 
-    // Logout
-    document.querySelector('.logout-button').addEventListener('click', function() {
-      window.location.href = 'index.html';
-    });
+    function openChat(patientId) {
+      window.location.href = `chat.html?patient=${patientId}`;
+    }
+
+    document.addEventListener('DOMContentLoaded', renderPacientes);
   </script>
 </body>
 </html>

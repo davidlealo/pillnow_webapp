@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PillNow | Chat con Paciente</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="dashboard-grid">
+    <!-- Sidebar (opcional) -->
+    <aside class="sidebar">
+      <div class="logo">💊 PillNow</div>
+      <nav class="main-nav">
+        <ul>
+          <li><a href="dashboard.html"><i class="icon-dashboard"></i> Dashboard</a></li>
+        </ul>
+      </nav>
+      <div class="user-profile">
+        <div class="avatar">F</div>
+        <div class="user-info">
+          <strong>Enfermera Fran</strong>
+          <small>Post-Operatorio</small>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="page-header">
+        <button class="btn-back" onclick="window.history.back()">
+          <i class="icon-arrow-left"></i> Volver
+        </button>
+        <h1>Chat con <span id="patient-name">Paciente</span></h1>
+        <div class="patient-chat-status">
+          <span class="status-badge critical">Estado Crítico</span>
+          <span class="status-badge">En línea</span>
+        </div>
+      </header>
+
+      <div class="chat-container">
+        <div class="chat-messages" id="chat-messages">
+          <div class="message message-ai">
+            <div class="message-sender">Asistente PillNow</div>
+            <div class="message-content">
+              Hola <span id="first-name">paciente</span>, soy el asistente virtual. ¿Cómo te sientes hoy?
+            </div>
+            <div class="message-time">10:00 AM</div>
+          </div>
+        </div>
+
+        <div class="message-input">
+          <div class="input-container">
+            <input type="text" placeholder="Escribe un mensaje..." id="message-input">
+            <div class="input-actions">
+              <button class="btn-icon" title="Adjuntar archivo">
+                <i class="icon-paperclip"></i>
+              </button>
+              <button class="btn-primary" id="send-button">Enviar</button>
+            </div>
+          </div>
+          <div class="quick-actions">
+            <button class="btn-small btn-outline">Solicitar signos vitales</button>
+            <button class="btn-small btn-outline">Recordar medicación</button>
+            <button class="btn-small btn-danger">Emergencia</button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const patientId = params.get('patient');
+
+    const pacientes = {
+      carlos: "Carlos Mendez",
+      ana: "Ana Gutierrez",
+      jose: "José Peña"
+    };
+
+    const nombreCompleto = pacientes[patientId] || "Paciente";
+    const primerNombre = nombreCompleto.split(" ")[0];
+
+    document.getElementById('patient-name').innerText = nombreCompleto;
+    document.getElementById('first-name').innerText = primerNombre;
+
+    // Enviar mensaje
+    document.getElementById('send-button').addEventListener('click', sendMessage);
+    document.getElementById('message-input').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') sendMessage();
+    });
+
+    function sendMessage() {
+      const input = document.getElementById('message-input');
+      const message = input.value.trim();
+      if (!message) return;
+
+      const chat = document.getElementById('chat-messages');
+
+      const nurseMessage = document.createElement('div');
+      nurseMessage.className = 'message message-nurse';
+      nurseMessage.innerHTML = `
+        <div class="message-sender">Enfermera Fran</div>
+        <div class="message-content">${message}</div>
+        <div class="message-time">${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>
+      `;
+
+      chat.appendChild(nurseMessage);
+      input.value = '';
+      chat.scrollTop = chat.scrollHeight;
+
+      // Simular respuesta
+      setTimeout(() => {
+        const respuestas = [
+          "Gracias, me siento un poco mejor.",
+          "Todavía tengo algo de dolor.",
+          "Me tomé la medicación hace 1 hora.",
+          "No he dormido bien anoche."
+        ];
+        const respuesta = respuestas[Math.floor(Math.random() * respuestas.length)];
+
+        const responseMessage = document.createElement('div');
+        responseMessage.className = 'message message-patient';
+        responseMessage.innerHTML = `
+          <div class="message-sender">${nombreCompleto}</div>
+          <div class="message-content">${respuesta}</div>
+          <div class="message-time">${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>
+        `;
+
+        chat.appendChild(responseMessage);
+        chat.scrollTop = chat.scrollHeight;
+      }, 1000 + Math.random() * 1500);
+    }
+  </script>
+</body>
+</html>

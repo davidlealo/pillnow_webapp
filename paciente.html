@@ -3,102 +3,122 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PillNow - Conversación</title>
+  <title>PillNow | Detalle de Paciente</title>
   <link rel="stylesheet" href="styles.css">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💊</text></svg>">
 </head>
 <body>
-  <div class="chat-container">
-    <header class="chat-header">
-      <button onclick="window.location.href='dashboard.html'" class="back-button">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        Volver
-      </button>
-      <h2 id="paciente-nombre">Paciente</h2>
-      <div class="patient-status">
-        <span class="status-badge">Post-operatorio</span>
+  <div class="dashboard-grid">
+    <!-- Sidebar (igual que en dashboard) -->
+    <aside class="sidebar">...</aside>
+
+    <main class="main-content">
+      <header class="page-header">
+        <button class="btn-back">
+          <i class="icon-arrow-left"></i> Volver
+        </button>
+        <h1>Detalle del Paciente</h1>
+      </header>
+
+      <div class="patient-detail-container">
+        <!-- Header del paciente -->
+        <div class="card patient-header-card">
+          <div class="patient-avatar-large">CM</div>
+          <div class="patient-header-info">
+            <h2>Carlos Mendez</h2>
+            <p class="patient-meta">58 años | Trasplante renal | Dr. Pérez</p>
+            <div class="patient-status">
+              <span class="status-badge critical">Estado Crítico</span>
+              <span class="status-badge">2 días post-op</span>
+            </div>
+          </div>
+          <div class="patient-vitals">
+            <div class="vital-card">
+              <h4>Temperatura</h4>
+              <div class="vital-value critical">38.6°C</div>
+            </div>
+            <div class="vital-card">
+              <h4>Presión</h4>
+              <div class="vital-value">120/80</div>
+            </div>
+            <div class="vital-card">
+              <h4>Sat. O₂</h4>
+              <div class="vital-value warning">92%</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pestañas de información -->
+        <div class="tab-container">
+          <div class="tab active" data-tab="overview">Resumen</div>
+          <div class="tab" data-tab="medication">Medicación</div>
+          <div class="tab" data-tab="tests">Exámenes</div>
+          <div class="tab" data-tab="care-plan">Plan de Cuidados</div>
+          <div class="tab" data-tab="chat">Chat</div>
+        </div>
+
+        <!-- Contenido de pestañas -->
+        <div class="tab-content active" id="overview">
+          <div class="card">
+            <h3>Últimos Eventos</h3>
+            <div class="timeline">
+              <div class="timeline-item critical">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                  <h4>Fiebre elevada</h4>
+                  <p class="timeline-time">Hace 2 horas</p>
+                  <p>Temperatura de 38.6°C reportada por el paciente. Se administró paracetamol.</p>
+                </div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                  <h4>Control de signos</h4>
+                  <p class="timeline-time">Hoy, 8:30 AM</p>
+                  <p>Presión arterial 120/80, SatO2 92%. Paciente reporta dolor moderado en zona de incisión.</p>
+                </div>
+              </div>
+              <!-- Más eventos... -->
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Medicación Actual</h3>
+            <div class="medication-list">
+              <div class="medication-item">
+                <div class="medication-info">
+                  <h4>Tacrolimus</h4>
+                  <p>Inmunosupresor - 2mg cada 12 horas</p>
+                </div>
+                <div class="medication-status">
+                  <span class="status-badge">Próxima dosis: 20:00</span>
+                </div>
+              </div>
+              <!-- Más medicamentos... -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Otras pestañas... -->
       </div>
-    </header>
-
-    <div class="chat-messages">
-      <div class="message enfermera">
-        <div class="message-header">
-          <strong>Enfermera Carla</strong>
-          <span class="message-time">10:30 AM</span>
-        </div>
-        <div class="message-content">
-          Hola, ¿cómo te sientes hoy tras la operación?
-        </div>
-      </div>
-
-      <div class="message paciente">
-        <div class="message-header">
-          <strong id="patient-name-display">Paciente</strong>
-          <span class="message-time">10:35 AM</span>
-        </div>
-        <div class="message-content">
-          Un poco adolorido, pero mejor que ayer. Gracias.
-        </div>
-      </div>
-
-      <!-- Más mensajes aquí -->
-    </div>
-
-    <div class="message-input">
-      <input type="text" placeholder="Escribe un mensaje..." id="message-text">
-      <button id="send-button">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M22 2L11 13M22 2L15 22L11 13M11 13L2 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </button>
-    </div>
+    </main>
   </div>
 
   <script>
-    // Obtener nombre desde URL
-    const params = new URLSearchParams(window.location.search);
-    const nombre = params.get('nombre');
-    const nombresSimulados = {
-      mario: "Mario Rojas",
-      camila: "Camila Soto",
-      esteban: "Esteban Vidal",
-      sofia: "Sofía Díaz"
-    };
-    const nombrePaciente = nombresSimulados[nombre] || "Paciente";
-    document.getElementById('paciente-nombre').innerText = nombrePaciente;
-    document.getElementById('patient-name-display').innerText = nombrePaciente;
-
-    // Simular envío de mensaje
-    document.getElementById('send-button').addEventListener('click', function() {
-      const messageText = document.getElementById('message-text').value;
-      if (messageText.trim() !== '') {
-        // Aquí iría la lógica para enviar el mensaje
-        // Por ahora solo lo mostramos en la interfaz
-        const messagesContainer = document.querySelector('.chat-messages');
-        const newMessage = document.createElement('div');
-        newMessage.className = 'message enfermera';
-        newMessage.innerHTML = `
-          <div class="message-header">
-            <strong>Enfermera Carla</strong>
-            <span class="message-time">${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
-          </div>
-          <div class="message-content">
-            ${messageText}
-          </div>
-        `;
-        messagesContainer.appendChild(newMessage);
-        document.getElementById('message-text').value = '';
-        messagesContainer.scrollTop = messagesContainer.scrollHeight;
-      }
-    });
-
-    // Permitir enviar con Enter
-    document.getElementById('message-text').addEventListener('keypress', function(e) {
-      if (e.key === 'Enter') {
-        document.getElementById('send-button').click();
-      }
+    // Lógica para cambiar pestañas
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.addEventListener('click', function() {
+        // Remover clase active de todas las pestañas y contenidos
+        document.querySelectorAll('.tab, .tab-content').forEach(el => {
+          el.classList.remove('active');
+        });
+        
+        // Agregar active a la pestaña clickeada
+        this.classList.add('active');
+        
+        // Mostrar el contenido correspondiente
+        const tabId = this.getAttribute('data-tab');
+        document.getElementById(tabId).classList.add('active');
+      });
     });
   </script>
 </body>
