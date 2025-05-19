@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PillNow - Conversación</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💊</text></svg>">
+</head>
+<body>
+  <div class="chat-container">
+    <header class="chat-header">
+      <button onclick="window.location.href='dashboard.html'" class="back-button">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Volver
+      </button>
+      <h2 id="paciente-nombre">Paciente</h2>
+      <div class="patient-status">
+        <span class="status-badge">Post-operatorio</span>
+      </div>
+    </header>
+
+    <div class="chat-messages">
+      <div class="message enfermera">
+        <div class="message-header">
+          <strong>Enfermera Carla</strong>
+          <span class="message-time">10:30 AM</span>
+        </div>
+        <div class="message-content">
+          Hola, ¿cómo te sientes hoy tras la operación?
+        </div>
+      </div>
+
+      <div class="message paciente">
+        <div class="message-header">
+          <strong id="patient-name-display">Paciente</strong>
+          <span class="message-time">10:35 AM</span>
+        </div>
+        <div class="message-content">
+          Un poco adolorido, pero mejor que ayer. Gracias.
+        </div>
+      </div>
+
+      <!-- Más mensajes aquí -->
+    </div>
+
+    <div class="message-input">
+      <input type="text" placeholder="Escribe un mensaje..." id="message-text">
+      <button id="send-button">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M22 2L11 13M22 2L15 22L11 13M11 13L2 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <script>
+    // Obtener nombre desde URL
+    const params = new URLSearchParams(window.location.search);
+    const nombre = params.get('nombre');
+    const nombresSimulados = {
+      mario: "Mario Rojas",
+      camila: "Camila Soto",
+      esteban: "Esteban Vidal",
+      sofia: "Sofía Díaz"
+    };
+    const nombrePaciente = nombresSimulados[nombre] || "Paciente";
+    document.getElementById('paciente-nombre').innerText = nombrePaciente;
+    document.getElementById('patient-name-display').innerText = nombrePaciente;
+
+    // Simular envío de mensaje
+    document.getElementById('send-button').addEventListener('click', function() {
+      const messageText = document.getElementById('message-text').value;
+      if (messageText.trim() !== '') {
+        // Aquí iría la lógica para enviar el mensaje
+        // Por ahora solo lo mostramos en la interfaz
+        const messagesContainer = document.querySelector('.chat-messages');
+        const newMessage = document.createElement('div');
+        newMessage.className = 'message enfermera';
+        newMessage.innerHTML = `
+          <div class="message-header">
+            <strong>Enfermera Carla</strong>
+            <span class="message-time">${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
+          </div>
+          <div class="message-content">
+            ${messageText}
+          </div>
+        `;
+        messagesContainer.appendChild(newMessage);
+        document.getElementById('message-text').value = '';
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+      }
+    });
+
+    // Permitir enviar con Enter
+    document.getElementById('message-text').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        document.getElementById('send-button').click();
+      }
+    });
+  </script>
+</body>
+</html>

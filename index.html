@@ -2,23 +2,41 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PillNow - Login</title>
   <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💊</text></svg>">
 </head>
 <body>
   <div class="login-container">
-    <h1>PillNow 👩‍⚕️</h1>
+    <h1>💊 PillNow</h1>
+    <p>Sistema de seguimiento post-operatorio</p>
     <form id="login-form">
-      <input type="email" placeholder="Correo" required>
-      <input type="password" placeholder="Contraseña" required>
-      <button type="submit">Iniciar sesión</button>
+      <div class="form-group">
+        <label for="email">Correo electrónico</label>
+        <input type="email" id="email" placeholder="tucorreo@ejemplo.com" required>
+      </div>
+      <div class="form-group">
+        <label for="password">Contraseña</label>
+        <input type="password" id="password" placeholder="••••••••" required>
+      </div>
+      <button type="submit" class="login-button">
+        <span>Iniciar sesión</span>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
     </form>
   </div>
 
   <script>
     document.getElementById('login-form').addEventListener('submit', function (e) {
       e.preventDefault();
-      window.location.href = 'dashboard.html'; // Simula login
+      // Agregar animación antes de redirigir
+      document.querySelector('.login-button').classList.add('loading');
+      setTimeout(() => {
+        window.location.href = 'dashboard.html';
+      }, 800);
     });
   </script>
 </body>
