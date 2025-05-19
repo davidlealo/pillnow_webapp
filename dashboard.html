@@ -1,3 +1,4 @@
+<!-- dashboard.html mejorado -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -7,11 +8,9 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💊</text></svg>">
 </head>
 <body>
   <div class="dashboard-grid">
-    <!-- Sidebar -->
     <aside class="sidebar">
       <div class="logo">💊 <span style="font-weight: bold;">PillNow</span></div>
       <nav class="main-nav">
@@ -24,7 +23,7 @@
         </ul>
       </nav>
       <div class="user-profile">
-        <img src="https://i.pravatar.cc/100?u=fran" alt="avatar" class="avatar" style="border-radius: 50%; width: 48px; height: 48px;">
+        <img src="https://i.pravatar.cc/100?img=47" alt="avatar" class="avatar">
         <div class="user-info">
           <strong>Enfermera Fran</strong>
           <small>Post-Operatorio</small>
@@ -32,22 +31,24 @@
       </div>
     </aside>
 
-    <!-- Contenido principal -->
     <main class="main-content">
       <header class="page-header">
         <h1>Panel de Seguimiento Post-Operatorio</h1>
         <div class="header-actions">
           <div class="search-box">
-            <input type="text" placeholder="Buscar paciente...">
+            <input type="text" id="busqueda" placeholder="Buscar paciente...">
           </div>
           <button class="btn-alert">
             <span class="alert-dot"></span>
             <span class="material-icons">notifications</span>
           </button>
+          <div class="notification-popup hidden" id="notification-popup">
+            <p><strong>Carlos Mendez</strong> ha reportado fiebre alta.</p>
+            <p><a href="chat.html?patient=carlos">Ir al chat</a></p>
+          </div>
         </div>
       </header>
 
-      <!-- Alertas urgentes -->
       <section class="alerts-section">
         <h2>Alertas Urgentes</h2>
         <div class="alerts-grid">
@@ -66,7 +67,6 @@
         </div>
       </section>
 
-      <!-- Resumen de pacientes -->
       <section class="patients-section">
         <div class="section-header">
           <h2>Mis 10 Pacientes</h2>
@@ -77,49 +77,21 @@
           </div>
         </div>
 
-        <div class="patients-grid" id="patients-grid">
-          <!-- Pacientes se cargarán por JS -->
-        </div>
+        <div class="patients-grid" id="patients-grid"></div>
       </section>
     </main>
   </div>
 
   <script>
     const pacientes = [
-      {
-        id: "carlos",
-        nombre: "Carlos Mendez",
-        avatarUrl: "https://i.pravatar.cc/100?u=carlos",
-        estado: "critical",
-        presion: "120/80",
-        temperatura: "38.6°C",
-        diasPostOp: 2,
-        alerta: "Urgente"
-      },
-      {
-        id: "ana",
-        nombre: "Ana Gutierrez",
-        avatarUrl: "https://i.pravatar.cc/100?u=ana",
-        estado: "warning",
-        presion: "110/70",
-        temperatura: "37.2°C",
-        diasPostOp: 5,
-        alerta: "Controlar"
-      },
-      {
-        id: "jose",
-        nombre: "José Peña",
-        avatarUrl: "https://i.pravatar.cc/100?u=jose",
-        estado: "stable",
-        presion: "118/76",
-        temperatura: "36.8°C",
-        diasPostOp: 3,
-        alerta: "Estable"
-      }
+      { id: "carlos", nombre: "Carlos Mendez", avatarUrl: "https://i.pravatar.cc/100?u=carlos", estado: "critical", presion: "120/80", temperatura: "38.6°C", diasPostOp: 2, alerta: "URGENTE" },
+      { id: "ana", nombre: "Ana Gutierrez", avatarUrl: "https://i.pravatar.cc/100?u=ana", estado: "warning", presion: "110/70", temperatura: "37.2°C", diasPostOp: 5, alerta: "CONTROLAR" },
+      { id: "jose", nombre: "José Peña", avatarUrl: "https://i.pravatar.cc/100?u=jose", estado: "stable", presion: "118/76", temperatura: "36.8°C", diasPostOp: 3, alerta: "ESTABLE" }
     ];
 
     function renderPacientes() {
       const contenedor = document.getElementById('patients-grid');
+      contenedor.innerHTML = '';
       pacientes.forEach(p => {
         contenedor.innerHTML += `
           <div class="card patient-card">
@@ -148,7 +120,20 @@
       window.location.href = `chat.html?patient=${patientId}`;
     }
 
-    document.addEventListener('DOMContentLoaded', renderPacientes);
+    document.addEventListener('DOMContentLoaded', () => {
+      renderPacientes();
+      document.querySelector('.btn-alert').addEventListener('click', () => {
+        document.getElementById('notification-popup').classList.toggle('hidden');
+      });
+      document.getElementById('busqueda').addEventListener('input', function() {
+        const filtro = this.value.toLowerCase();
+        const cards = document.querySelectorAll('.patient-card');
+        cards.forEach(card => {
+          const nombre = card.querySelector('h3').textContent.toLowerCase();
+          card.style.display = nombre.includes(filtro) ? '' : 'none';
+        });
+      });
+    });
   </script>
 </body>
 </html>

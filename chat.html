@@ -1,3 +1,4 @@
+<!-- chat.html mejorado -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -5,19 +6,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PillNow | Chat con Paciente</title>
   <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
   <div class="dashboard-grid">
-    <!-- Sidebar (opcional) -->
     <aside class="sidebar">
       <div class="logo">💊 PillNow</div>
       <nav class="main-nav">
         <ul>
-          <li><a href="dashboard.html"><i class="icon-dashboard"></i> Dashboard</a></li>
+          <li><a href="dashboard.html"><span class="material-icons">dashboard</span> Dashboard</a></li>
+          <li><a href="paciente.html"><span class="material-icons">group</span> Mis Pacientes</a></li>
         </ul>
       </nav>
       <div class="user-profile">
-        <div class="avatar">F</div>
+        <img src="https://i.pravatar.cc/100?img=47" alt="avatar" class="avatar">
         <div class="user-info">
           <strong>Enfermera Fran</strong>
           <small>Post-Operatorio</small>
@@ -27,8 +29,8 @@
 
     <main class="main-content">
       <header class="page-header">
-        <button class="btn-back" onclick="window.history.back()">
-          <i class="icon-arrow-left"></i> Volver
+        <button class="btn-outline" onclick="window.history.back()">
+          <span class="material-icons">arrow_back</span> Volver
         </button>
         <h1>Chat con <span id="patient-name">Paciente</span></h1>
         <div class="patient-chat-status">
@@ -53,15 +55,15 @@
             <input type="text" placeholder="Escribe un mensaje..." id="message-input">
             <div class="input-actions">
               <button class="btn-icon" title="Adjuntar archivo">
-                <i class="icon-paperclip"></i>
+                <span class="material-icons">attach_file</span>
               </button>
               <button class="btn-primary" id="send-button">Enviar</button>
             </div>
           </div>
           <div class="quick-actions">
-            <button class="btn-small btn-outline">Solicitar signos vitales</button>
-            <button class="btn-small btn-outline">Recordar medicación</button>
-            <button class="btn-small btn-danger">Emergencia</button>
+            <button class="btn-small btn-outline" onclick="simularAccion('signos')">Solicitar signos vitales</button>
+            <button class="btn-small btn-outline" onclick="simularAccion('medicacion')">Recordar medicación</button>
+            <button class="btn-small btn-danger" onclick="simularAccion('emergencia')">Emergencia</button>
           </div>
         </div>
       </div>
@@ -84,7 +86,6 @@
     document.getElementById('patient-name').innerText = nombreCompleto;
     document.getElementById('first-name').innerText = primerNombre;
 
-    // Enviar mensaje
     document.getElementById('send-button').addEventListener('click', sendMessage);
     document.getElementById('message-input').addEventListener('keypress', function(e) {
       if (e.key === 'Enter') sendMessage();
@@ -109,27 +110,39 @@
       input.value = '';
       chat.scrollTop = chat.scrollHeight;
 
-      // Simular respuesta
-      setTimeout(() => {
-        const respuestas = [
-          "Gracias, me siento un poco mejor.",
-          "Todavía tengo algo de dolor.",
-          "Me tomé la medicación hace 1 hora.",
-          "No he dormido bien anoche."
-        ];
-        const respuesta = respuestas[Math.floor(Math.random() * respuestas.length)];
+      setTimeout(() => responder(), 1000 + Math.random() * 1500);
+    }
 
-        const responseMessage = document.createElement('div');
-        responseMessage.className = 'message message-patient';
-        responseMessage.innerHTML = `
-          <div class="message-sender">${nombreCompleto}</div>
-          <div class="message-content">${respuesta}</div>
-          <div class="message-time">${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>
-        `;
+    function responder(texto = null) {
+      const chat = document.getElementById('chat-messages');
+      const respuestas = [
+        "Gracias, me siento un poco mejor.",
+        "Todavía tengo algo de dolor.",
+        "Me tomé la medicación hace 1 hora.",
+        "No he dormido bien anoche."
+      ];
+      const respuesta = texto || respuestas[Math.floor(Math.random() * respuestas.length)];
 
-        chat.appendChild(responseMessage);
-        chat.scrollTop = chat.scrollHeight;
-      }, 1000 + Math.random() * 1500);
+      const responseMessage = document.createElement('div');
+      responseMessage.className = 'message message-patient';
+      responseMessage.innerHTML = `
+        <div class="message-sender">${nombreCompleto}</div>
+        <div class="message-content">${respuesta}</div>
+        <div class="message-time">${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>
+      `;
+
+      chat.appendChild(responseMessage);
+      chat.scrollTop = chat.scrollHeight;
+    }
+
+    function simularAccion(tipo) {
+      if (tipo === 'signos') {
+        responder("Mis signos vitales están estables: presión 120/80, temperatura 36.8°C.");
+      } else if (tipo === 'medicacion') {
+        responder("Sí, tomé la medicación hace 30 minutos.");
+      } else if (tipo === 'emergencia') {
+        responder("Tengo dificultad para respirar, necesito ayuda urgente.");
+      }
     }
   </script>
 </body>
